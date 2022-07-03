@@ -2,7 +2,7 @@ package Model;
 
 import org.junit.Before;
 import org.junit.Test;
-
+import Model.Utente;
 import java.sql.Date;
 
 import static org.junit.Assert.*;

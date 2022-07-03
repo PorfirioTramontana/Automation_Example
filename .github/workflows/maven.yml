@@ -38,7 +38,7 @@ jobs:
           java-version: '17'
           maven-version: '3.8.3'
       - name: Package
-        run: mvn $MAVEN_CLI_OPTS $MAVEN_OPTS -D skipTests clean package
+        run: mvn -D skipTests clean package
       - name: Create Artifact
         if: success()
         uses: actions/upload-artifact@v3
