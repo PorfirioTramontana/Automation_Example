@@ -54,10 +54,3 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: PrinoFy
-      - name: Release Creation
-      - uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: false
-          files: |
-            *.jar
