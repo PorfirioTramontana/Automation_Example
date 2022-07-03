@@ -4,10 +4,9 @@ on:
   push
 
 jobs:
+
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - name: Setup Maven Action
       uses: s4u/setup-maven-action@v1.2.1
@@ -16,3 +15,46 @@ jobs:
         maven-version: '3.8.3'
     - name: Build with Maven
       run: mvn compile
+  Test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.2.1
+        with:
+          java-version: '17'
+          maven-version: '3.8.3'
+      - name: Running Test
+        run: mvn test
+  Package:
+    runs-on: ubuntu-latest
+    needs: Test
+    steps:
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.2.1
+        with:
+          java-version: '17'
+          maven-version: '3.8.3'
+      - name: Package
+        run: mvn $MAVEN_CLI_OPTS $MAVEN_OPTS -D skipTests clean package
+      - name: Create Artifact
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: PrinoFy
+          path: target/*.jar
+  Release:
+    runs-on: ubuntu-latest
+    needs: Package
+    steps:
+      - name: Download file Jar Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: PrinoFy
+      - name: Release Creation
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false
+          files: |
+            *.jar
