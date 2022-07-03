@@ -61,3 +61,10 @@ jobs:
           prerelease: false
           automatic_release_tag: latest
           files: PrinoFy
+          
+  Deployment:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: deploy
+        run: echo "deploy"
